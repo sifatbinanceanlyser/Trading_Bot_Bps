@@ -2,8 +2,8 @@ import pandas as pd
 from binance.client import Client
 
 # আপনার Binance API Key ও Secret Code এখানে বসাবেন
-BINANCE_API_KEY = "9fugGOQk9vcXLyozou2U8mAnMotyeEB8rBvwxHb2vdu81EIBXSuvYUbrT46TOfqe"
-BINANCE_API_SECRET = "VS5c6wCE507foCkLe0NiuLOugxObY558jIDT97SfSA35p5tvxhHvuFZqd9DlCK7x"
+BINANCE_API_KEY = "3Xw5chXc4kSXeCP3MoKatiA7IIEBpqTc22UMTiFDoxqfOwffls2WuK7WWhRPFMdK"
+BINANCE_API_SECRET = "lUTKnAI5HYbktEN4TS6lNSvzO64G3X6JA9qlgDOVioDgE2yBmqEYwiAWF4VPK6mf"
 
 client = Client(BINANCE_API_KEY, BINANCE_API_SECRET)
 
