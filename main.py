@@ -3,7 +3,7 @@ from datetime import datetime
 from binance_feed import get_binance_candles
 from telegram_bot import send_telegram_signal
 
-# strategies/strategies ফোল্ডার থেকে ২০টি স্ট্র্যাটেজি ইমপোর্ট করা
+# strategies/strategies folder theke 20-ti strategy import kora
 from strategies.strategies.strategy_1 import check_strategy_1
 from strategies.strategies.strategy_2 import check_strategy_2
 from strategies.strategies.strategy_3 import check_strategy_3
@@ -38,8 +38,33 @@ STRATEGY_LIST = [
     ("Setup 19", check_strategy_19), ("Setup 20", check_strategy_20)
 ]
 
-# Quotex Non-OTC Trade করার জন্য জনপ্রিয় Binance পেয়ারসমূহ
-PAIRS = ["EURUSDT", "GBPUSDT", "AUDUSDT", "USDCAD", "USDJPY"]
+# Quotex Non-OTC match korar moto shobgulo major forex ebong crypto pair-er list
+PAIRS = [
+    # Major Forex & Cross Pairs (Binance USDT Pairs)
+    "EURUSDT",
+    "GBPUSDT",
+    "AUDUSDT",
+    "USDCAD",
+    "USDJPY",
+    "EURJPY",
+    "GBPJPY",
+    "NZDUSDT",
+    "AUDJPY",
+    "EURGBP",
+    "EURAUD",
+    "GBPAUD",
+    "CHFJPY",
+    "CADJPY",
+    "AUDCAD",
+    
+    # Popular Crypto Pairs (Binance Spot)
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "XRPUSDT",
+    "ADAUSDT",
+    "DOGEUSDT"
+]
 
 def scan_all_strategies(df):
     for setup_name, func in STRATEGY_LIST:
@@ -60,7 +85,7 @@ def start_bot():
         second = now.second
         minute = now.minute
 
-        # প্রতি মিনিটের ঠিক ৫৮তম সেকেন্ডে স্ক্যান করবে
+        # Proti minute-er thik 58-th second-e scan korbe
         if second == 58 and minute != last_scanned_minute:
             last_scanned_minute = minute
             print(f"\n🔍 Scanning Market at {now.strftime('%H:%M:%S')}...")
@@ -81,3 +106,4 @@ def start_bot():
 
 if __name__ == "__main__":
     start_bot()
+    
