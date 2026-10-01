@@ -1,41 +1,18 @@
-import pandas as pd
-
-def check_strategy_6(df, snr_resistance_level):
-    """
-    Setup - 6: Resistance Doji Reversal Setup (DOWN Signal)
+def check_setup_6(df):
+    """ Setup 6: Resistance Doji Reversal (PUT) """
+    if len(df) < 4: return None
     
-    Conditions:
-    1. Uptrend: Market is moving upwards before Candle 1.
-    2. Candle 1: Doji Candle (Open and Close are almost equal, very small body).
-    3. Touches Resistance: High >= SNR resistance level.
-    4. Closes Below Resistance: Close < SNR resistance level.
-    """
-    if len(df) < 5:
-        return None
-
-    candle_1 = df.iloc[-1]  # Latest completed Doji candle
-
-    # 1. Strict Uptrend Check (Prior 3 candles are GREEN and moving up)
-    p1 = df.iloc[-4]
-    p2 = df.iloc[-3]
-    p3 = df.iloc[-2]
+    res = df['high'].rolling(window=20, min_periods=5).max().iloc[-1]
+    c1 = df.iloc[-1]  # Doji Candle
     
-    is_uptrend = (p1['close'] > p1['open']) and (p2['close'] > p2['open']) and (p3['close'] > p3['open'])
-
-    # 2. Doji Candle Logic (Body size <= 10% of total range)
-    body_size = abs(candle_1['close'] - candle_1['open'])
-    total_range = candle_1['high'] - candle_1['low']
-    total_range = 0.00001 if total_range == 0 else total_range  # Avoid zero division
+    body = abs(c1['close'] - c1['open'])
+    total_range = c1['high'] - c1['low']
     
-    is_doji = (body_size / total_range) <= 0.10
-
-    # 3. SNR Touch & Close Below Resistance Logic
-    touches_snr_1 = candle_1['high'] >= snr_resistance_level
-    closes_below_snr_1 = candle_1['close'] < snr_resistance_level
-
-    # Final Signal Decision
-    if is_uptrend and is_doji and touches_snr_1 and closes_below_snr_1:
-        return "PUT"  # Next candle DOWN signal
-
+    is_doji = body <= (total_range * 0.12) if total_range > 0 else False
+    touches_resistance = c1['high'] >= res
+    closes_below_resistance = max(c1['open'], c1['close']) <= res
+    
+    if is_doji and touches_resistance and closes_below_resistance:
+        return "PUT"
     return None
-  
+    
