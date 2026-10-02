@@ -1,44 +1,26 @@
-import pandas as pd
-
-def check_strategy_13(df, snr_resistance):
-    """
-    Setup - 13: Breakout & Re-test Continuation Setup (UP Signal)
+def check_setup_13(df):
+    """ Setup 13: Breakout Retest Setup (CALL) """
+    if len(df) < 6: return None
     
-    Sequence:
-    1. Uptrend check: 2 prior green candles before breakout candle.
-    2. Candle 1 (g1): GREEN breakout candle closing above SNR resistance.
-    3. Candle 2 (r2): RED re-test candle touching SNR resistance (Low <= snr_resistance) 
-       and closing strictly above SNR resistance (Close > snr_resistance).
-    """
-    if len(df) < 4:
+    # SNR Resistance Level Calculation
+    res = df['high'].iloc[:-2].rolling(window=20, min_periods=5).max().iloc[-1]
+    
+    c1 = df.iloc[-2]  # 1no Green Breakout Candle
+    c2 = df.iloc[-1]  # 2no Red Retest Candle
+    
+    # Candle Types
+    is_c1_green = c1['close'] > c1['open']
+    is_c2_red = c2['close'] < c2['open']
+    
+    if not (is_c1_green and is_c2_red):
         return None
-
-    # Getting relevant candles
-    p2 = df.iloc[-4]  # Prior Trend Green Candle 1
-    p1 = df.iloc[-3]  # Prior Trend Green Candle 2
-    g1 = df.iloc[-2]  # 1-no Green Breakout Candle
-    r2 = df.iloc[-1]  # 2-no Red Re-test Candle
-
-    # 1. Prior Uptrend Check (2 Green Candles before breakout)
-    is_p2_green = p2['close'] > p2['open']
-    is_p1_green = p1['close'] > p1['open']
-    prior_uptrend = is_p2_green and is_p1_green and (p1['close'] > p2['close'])
-
-    # 2. Color Checks for Breakout and Re-test Candles
-    is_g1_green = g1['close'] > g1['open']
-    is_r2_red = r2['close'] < r2['open']
-
-    # 3. Breakout Condition (Candle 1 closes above SNR resistance)
-    g1_breaks_snr = g1['close'] > snr_resistance
-
-    # 4. Re-test Condition (Candle 2 touches SNR with low wick and closes above SNR)
-    r2_touches_snr = r2['low'] <= snr_resistance
-    r2_closes_above_snr = r2['close'] > snr_resistance
-
-    # Final Decision
-    if (prior_uptrend and is_g1_green and is_r2_red and 
-        g1_breaks_snr and r2_touches_snr and r2_closes_above_snr):
-        return "CALL"  # Next candle UP signal
-
+        
+    # Conditions
+    c1_breaks_res = c1['close'] > res and c1['open'] < res
+    c2_retests_res = c2['low'] <= res and c2['close'] > res
+    
+    if c1_breaks_res and c2_retests_res:
+        return "CALL"
+        
     return None
-  
+    
