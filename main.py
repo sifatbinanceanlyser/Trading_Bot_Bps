@@ -35,10 +35,9 @@ STRATEGY_LIST = [
     ("Setup 13", check_setup_13), ("Setup 14", check_setup_14),
     ("Setup 15", check_setup_15), ("Setup 16", check_setup_16),
     ("Setup 17", check_setup_17), ("Setup 18", check_setup_18),
-    ("Setup 19", check_setup_19), ("Setup 20", check_setup_20)
-]
+    ("Setup 19", check_setup_19), ("Setup 20", check_setup_20]
 
-# Quotex Non-OTC Match-er Exact 12 Binance Pairs
+# 12 ta Non-OTC Pair er nirdharito list (ekhane shob gulai porayjaykrome scan hobe)
 PAIRS = [
     "EURUSDT",
     "GBPUSDT",
@@ -66,7 +65,7 @@ def scan_all_strategies(df):
 
 def start_bot():
     print("🤖 24/7 Binance Non-OTC Scanning Bot Started...")
-    print(f"📊 Monitoring {len(PAIRS)} pairs with 20 setups.")
+    print(f"📊 Monitoring all {len(PAIRS)} pairs with 20 setups successfully.")
     last_scanned_minute = -1
 
     while True:
@@ -75,10 +74,10 @@ def start_bot():
             second = now.second
             minute = now.minute
 
-            # Proti minute-er thik 58-th second-e scan korbe
+            # Prottek minute-er thik 58-th second-e scan korbe
             if second == 58 and minute != last_scanned_minute:
                 last_scanned_minute = minute
-                print(f"\n🔍 Scanning Market at {now.strftime('%H:%M:%S')}...")
+                print(f"\n🔍 Scanning All 12 Market Pairs at {now.strftime('%H:%M:%S')}...")
 
                 for symbol in PAIRS:
                     try:
@@ -106,4 +105,4 @@ def start_bot():
 
 if __name__ == "__main__":
     start_bot()
-                            
+            
