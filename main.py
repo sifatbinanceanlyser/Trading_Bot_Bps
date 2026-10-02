@@ -26,18 +26,29 @@ from strategies.strategies.strategy_19 import check_setup_19
 from strategies.strategies.strategy_20 import check_setup_20
 
 STRATEGY_LIST = [
-    ("Setup 1", check_setup_1),   ("Setup 2", check_setup_2),
-    ("Setup 3", check_setup_3),   ("Setup 4", check_setup_4),
-    ("Setup 5", check_setup_5),   ("Setup 6", check_setup_6),
-    ("Setup 7", check_setup_7),   ("Setup 8", check_setup_8),
-    ("Setup 9", check_setup_9),   ("Setup 10", check_setup_10),
-    ("Setup 11", check_setup_11), ("Setup 12", check_setup_12),
-    ("Setup 13", check_setup_13), ("Setup 14", check_setup_14),
-    ("Setup 15", check_setup_15), ("Setup 16", check_setup_16),
-    ("Setup 17", check_setup_17), ("Setup 18", check_setup_18),
-    ("Setup 19", check_setup_19), ("Setup 20", check_setup_20]
+    ("Setup 1", check_setup_1),   
+    ("Setup 2", check_setup_2),
+    ("Setup 3", check_setup_3),   
+    ("Setup 4", check_setup_4),
+    ("Setup 5", check_setup_5),   
+    ("Setup 6", check_setup_6),
+    ("Setup 7", check_setup_7),   
+    ("Setup 8", check_setup_8),
+    ("Setup 9", check_setup_9),   
+    ("Setup 10", check_setup_10),
+    ("Setup 11", check_setup_11), 
+    ("Setup 12", check_setup_12),
+    ("Setup 13", check_setup_13), 
+    ("Setup 14", check_setup_14),
+    ("Setup 15", check_setup_15), 
+    ("Setup 16", check_setup_16),
+    ("Setup 17", check_setup_17), 
+    ("Setup 18", check_setup_18),
+    ("Setup 19", check_setup_19), 
+    ("Setup 20", check_setup_20)
+]
 
-# 12 ta Non-OTC Pair er nirdharito list (ekhane shob gulai porayjaykrome scan hobe)
+# Quotex Non-OTC Match-er Exact 12 Binance Pairs
 PAIRS = [
     "EURUSDT",
     "GBPUSDT",
@@ -65,7 +76,7 @@ def scan_all_strategies(df):
 
 def start_bot():
     print("🤖 24/7 Binance Non-OTC Scanning Bot Started...")
-    print(f"📊 Monitoring all {len(PAIRS)} pairs with 20 setups successfully.")
+    print(f"📊 Monitoring {len(PAIRS)} pairs with 20 setups.")
     last_scanned_minute = -1
 
     while True:
@@ -74,10 +85,10 @@ def start_bot():
             second = now.second
             minute = now.minute
 
-            # Prottek minute-er thik 58-th second-e scan korbe
+            # Proti minute-er thik 58-th second-e scan korbe
             if second == 58 and minute != last_scanned_minute:
                 last_scanned_minute = minute
-                print(f"\n🔍 Scanning All 12 Market Pairs at {now.strftime('%H:%M:%S')}...")
+                print(f"\n🔍 Scanning Market at {now.strftime('%H:%M:%S')}...")
 
                 for symbol in PAIRS:
                     try:
