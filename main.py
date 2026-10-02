@@ -1,6 +1,6 @@
 import time
 from datetime import datetime
-from binance_feed import get_binance_candles
+import yfinance as yf
 from telegram_bot import send_telegram_signal
 
 # 1 theke 20 shob setup-er unified import
@@ -48,21 +48,32 @@ STRATEGY_LIST = [
     ("Setup 20", check_setup_20)
 ]
 
-# Quotex Non-OTC Match-er Exact 12 Binance Pairs
-PAIRS = [
-    "EURUSDT",
-    "GBPUSDT",
-    "AUDUSDT",
-    "USDCAD",
-    "USDJPY",
-    "EURJPY",
-    "GBPJPY",
-    "NZDUSDT",
-    "BTCUSDT",
-    "ETHUSDT",
-    "SOLUSDT",
-    "XRPUSDT"
-]
+# Yahoo Finance compatible 12 Pairs (Forex er jonno =X ebong Crypto er jonno -USD)
+YAHOO_PAIRS_MAP = {
+    "EURUSDT": "EURUSD=X",
+    "GBPUSDT": "GBPUSD=X",
+    "AUDUSDT": "AUDUSD=X",
+    "USDCAD": "USDCAD=X",
+    "USDJPY": "USDJPY=X",
+    "EURJPY": "EURJPY=X",
+    "GBPJPY": "GBPJPY=X",
+    "NZDUSDT": "NZDUSD=X",
+    "BTCUSDT": "BTC-USD",
+    "ETHUSDT": "ETH-USD",
+    "SOLUSDT": "SOL-USD",
+    "XRPUSDT": "XRP-USD"
+}
+
+def get_yahoo_candles(symbol):
+    try:
+        yahoo_symbol = YAHOO_PAIRS_MAP.get(symbol, symbol)
+        ticker = yf.Ticker(yahoo_symbol)
+        df = ticker.history(period="1d", interval="1m")
+        if df is not None and not df.empty:
+            return df
+    except Exception as e:
+        pass
+    return None
 
 def scan_all_strategies(df):
     for setup_name, func in STRATEGY_LIST:
@@ -75,8 +86,8 @@ def scan_all_strategies(df):
     return None, None
 
 def start_bot():
-    print("🤖 24/7 Binance Non-OTC Scanning Bot Started...")
-    print(f"📊 Monitoring {len(PAIRS)} pairs with 20 setups.")
+    print("🤖 24/7 Yahoo Finance Live Scanning Bot Started...")
+    print(f"📊 Monitoring {len(YAHOO_PAIRS_MAP)} pairs with 20 setups.")
     last_scanned_minute = -1
 
     while True:
@@ -90,9 +101,9 @@ def start_bot():
                 last_scanned_minute = minute
                 print(f"\n🔍 Scanning Market at {now.strftime('%H:%M:%S')}...")
 
-                for symbol in PAIRS:
+                for symbol in YAHOO_PAIRS_MAP.keys():
                     try:
-                        df = get_binance_candles(symbol=symbol)
+                        df = get_yahoo_candles(symbol=symbol)
                         
                         if df is not None and not df.empty:
                             setup_name, signal = scan_all_strategies(df)
@@ -116,4 +127,4 @@ def start_bot():
 
 if __name__ == "__main__":
     start_bot()
-            
+        
